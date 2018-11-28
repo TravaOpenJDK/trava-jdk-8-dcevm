@@ -1,0 +1,50 @@
+language: cpp
+env: SOURCE_JDK_TAG=dcevm-8.0.0+1
+matrix:
+  include:
+  - os: osx
+    env: OS_BUILD=osx
+  - os: linux
+    env: OS_BUILD=linux
+    dist: xenial
+    sudo: required
+    before_install:
+    - sudo apt-get install -y libx11-dev libxext-dev libxrender-dev libxtst-dev libxt-dev
+      libcups2-dev libasound2
+    - sudo ln -s /usr/lib/x86_64-linux-gnu/libasound.so.2 /usr/lib/x86_64-linux-gnu/libasound.so
+  - os: windows
+    env: OS_BUILD=windows
+    before_install:
+    - choco install cygwin
+    - C:\\tools\\cygwin\\cygwinsetup.exe -q -P make,unzip,automake,autoconf,zip
+before_script:
+  - if [[ $OS_BUILD == "linux" || $OS_BUILD == "osx" ]]; then
+      unset -v _JAVA_OPTIONS;
+      wget https://github.com/sormuras/bach/raw/master/install-jdk.sh;
+      git clone --depth 1 https://github.com/TravaOpenJDK/openjdk-build.git;
+    fi
+  - if [[ $OS_BUILD == "windows" ]]; then
+      unset -v _JAVA_OPTIONS;
+      git config --system core.longpaths true;
+      git config --global core.autocrlf false;
+      git clone --depth 1 https://github.com/skybber/openjdk-build.git;
+    fi
+script:
+  - if [[ $OS_BUILD == "linux" || $OS_BUILD == "osx" ]]; then
+      source install-jdk.sh -f 8;
+      bash -c "cd openjdk-build && export LOG=info && ./makejdk-any-platform.sh --tag \"${SOURCE_JDK_TAG}\" --build-variant dcevm --branch dcevm8 
+        --configure-args '-disable-warnings-as-errors' --target-file-name java8-openjdk-dcevm-${TRAVIS_OS_NAME}.tar.gz jdk8u";
+    fi
+  - if [[ $OS_BUILD == "windows" ]]; then
+      powershell -Command "C:\tools\cygwin\bin\bash.exe -c './build_windows.sh'";
+    fi
+deploy:
+  provider: releases
+  api_key:
+  file_glob: true
+  file: openjdk-build/workspace/target/*
+  skip_cleanup: true
+  on:
+    repo: TravaOpenJDK/trava-jdk-8-dcevm
+    all_branches: true
+    tags: true

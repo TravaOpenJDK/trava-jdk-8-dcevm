@@ -1,18 +1,16 @@
 export PATH=/cygdrive/c/tools/cygwin/bin:$PATH
 
-url=$(curl -silent https://api.adoptopenjdk.net/openjdk8/nightly/x64_Win/ | grep 'binary_link' | grep -Eo '(http|https)://[^"]+' | head -1)
-wget --quiet ${url}
-zip_file=$(basename ${url})
-target=$(unzip -Z1 ${zip_file} | grep 'bin/javac'  | tr '/' '\n' | tail -3 | head -1)
-unzip -q ${zip_file}
+wget -q -O OpenJDK8_x64_Windows.zip "https://api.adoptopenjdk.net/v2/binary/releases/openjdk8?openjdk_impl=hotspot&os=windows&arch=x64&release=latest&type=jdk"
 
-export JAVA_HOME=$(cd "${target}"; pwd)
-export PATH=${JAVA_HOME}/bin:$PATH 
+JDK_BOOT_DIR="$PWD/$(unzip -Z1 OpenJDK8_x64_Windows.zip | grep 'bin/javac'  | tr '/' '\n' | tail -3 | head -1)"
+unzip -q OpenJDK8_x64_Windows.zip
 
 # unset cygwin's gcc preconfigured
 unset -v CC
 unset -v CXX
 
+FREETYPE_DIR="$PWD/openjdk-build/freetype"
+
 cd ./openjdk-build
 export LOG=info
-./makejdk-any-platform.sh --tag "${SOURCE_JDK_TAG}" --build-variant dcevm --branch dcevm8 --configure-args '-disable-warnings-as-errors --disable-hotspot-gtest' --target-file-name java8-openjdk-dcevm-${TRAVIS_OS_NAME}.zip jdk8u
+./makejdk-any-platform.sh --tag "${SOURCE_JDK_TAG}" --jdk-boot-dir "${JDK_BOOT_DIR}" --configure-args "--with-freetype-include=${FREETYPE_DIR}/include --with-freetype-lib=${FREETYPE_DIR}/lib32" --target-file-name java8-openjdk-dcevm-${TRAVIS_OS_NAME}.zip jdk8u

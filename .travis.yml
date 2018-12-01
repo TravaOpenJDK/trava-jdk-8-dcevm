@@ -28,7 +28,7 @@ before_script:
       git config --global core.autocrlf false;
     fi
   - unset -v _JAVA_OPTIONS;
-  - git clone --depth 1 https://github.com/skybber/openjdk-build.git;
+  - git clone --depth 1 https://github.com/TravaOpenJDK/openjdk-build.git;
 script:
   - export JDK_BOOT_DIR="$PWD/openjdk-build/jdk-8"
   - mkdir -p "$JDK_BOOT_DIR"
@@ -40,7 +40,7 @@ script:
       wget -q -O - "https://api.adoptopenjdk.net/v2/binary/releases/openjdk8?openjdk_impl=hotspot&os=mac&arch=x64&release=latest&type=jdk" | tar xpzf - --strip-components=2 -C ${JDK_BOOT_DIR};
       JDK_BOOT_DIR="${JDK_BOOT_DIR}/Contents/Home";
       export SA_LDFLAGS=-fobjc-exceptions;
-      bash -c "cd openjdk-build && export LOG=info && ./makejdk-any-platform.sh --tag \"${SOURCE_JDK_TAG}\"  --build-variant skybber  --branch master --jdk-boot-dir ${JDK_BOOT_DIR} --target-file-name java8-openjdk-dcevm-${TRAVIS_OS_NAME}.tar.gz jdk8u";
+      bash -c "cd openjdk-build && export LOG=info && ./makejdk-any-platform.sh --tag \"${SOURCE_JDK_TAG}\"  --jdk-boot-dir ${JDK_BOOT_DIR} --target-file-name java8-openjdk-dcevm-${TRAVIS_OS_NAME}.tar.gz jdk8u";
     fi
   - if [[ $OS_BUILD == "windows" ]]; then
       powershell -Command "C:\tools\cygwin\bin\bash.exe -c './build_windows.sh'";

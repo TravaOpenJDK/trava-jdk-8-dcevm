@@ -9,7 +9,7 @@ unzip -q OpenJDK8_x64_Windows.zip
 unset -v CC
 unset -v CXX
 
-FREETYPE_DIR="$PWD/openjdk-build/installedfreetype"
+FREETYPE_DIR="$PWD/openjdk-build/workspace/build/installedfreetype"
 
 cd ./openjdk-build
 export LOG=info

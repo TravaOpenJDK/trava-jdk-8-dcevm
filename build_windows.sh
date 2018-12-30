@@ -13,4 +13,4 @@ FREETYPE_DIR="$PWD/openjdk-build/workspace/build/installedfreetype"
 
 cd ./openjdk-build
 export LOG=info
-./makejdk-any-platform.sh --tag "${SOURCE_JDK_TAG}" --jdk-boot-dir "${JDK_BOOT_DIR}" --configure-args "--with-freetype-include=${FREETYPE_DIR}/include --with-freetype-lib=${FREETYPE_DIR}/lib" --target-file-name java8-openjdk-dcevm-${TRAVIS_OS_NAME}.zip jdk8u
+./makejdk-any-platform.sh --tag "${SOURCE_JDK_TAG}" --jdk-boot-dir "${JDK_BOOT_DIR}" --configure-args "--with-freetype=${FREETYPE_DIR}" --target-file-name java8-openjdk-dcevm-${TRAVIS_OS_NAME}.zip jdk8u

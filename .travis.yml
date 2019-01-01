@@ -1,5 +1,5 @@
 language: cpp
-env: SOURCE_JDK_TAG=jdk8u192-b12
+env: SOURCE_JDK_TAG=dcevm8u192.0
 jdk: oraclejdk8
 matrix:
   include:
@@ -40,7 +40,8 @@ script:
       wget -q -O - "https://api.adoptopenjdk.net/v2/binary/releases/openjdk8?openjdk_impl=hotspot&os=mac&arch=x64&release=latest&type=jdk" | tar xpzf - --strip-components=2 -C ${JDK_BOOT_DIR};
       JDK_BOOT_DIR="${JDK_BOOT_DIR}/Contents/Home";
       export SA_LDFLAGS=-fobjc-exceptions;
-      bash -c "cd openjdk-build && export LOG=info && ./makejdk-any-platform.sh --tag \"${SOURCE_JDK_TAG}\"  --jdk-boot-dir ${JDK_BOOT_DIR} --target-file-name java8-openjdk-dcevm-${TRAVIS_OS_NAME}.tar.gz jdk8u";
+      bash -c "cd openjdk-build && export LOG=info && ./makejdk-any-platform.sh --tag \"${SOURCE_JDK_TAG}\" --jdk-boot-dir ${JDK_BOOT_DIR} --build-variant dcevm --branch dcevm8u192
+        --hswap-agent-download-url \"${HSWAP_AGENT_DOWNLOAD_URL}\" --target-file-name java8-openjdk-dcevm-${TRAVIS_OS_NAME}.tar.gz jdk8u";
     fi
   - if [[ $OS_BUILD == "windows" ]]; then
       powershell -Command "C:\tools\cygwin\bin\bash.exe -c './build_windows.sh'";

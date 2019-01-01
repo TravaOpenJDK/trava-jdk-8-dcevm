@@ -23,36 +23,30 @@ matrix:
     - choco install cygwin
     - C:\\tools\\cygwin\\cygwinsetup.exe -q -P make,unzip,automake,autoconf,zip
 before_script:
-  - if [[ $OS_BUILD == "windows" ]]; then
-      git config --system core.longpaths true;
-      git config --global core.autocrlf false;
-    fi
-  - unset -v _JAVA_OPTIONS;
-  - git clone --depth 1 https://github.com/TravaOpenJDK/openjdk-build.git;
+- if [[ $OS_BUILD == "windows" ]]; then git config --system core.longpaths true; git
+  config --global core.autocrlf false; fi
+- unset -v _JAVA_OPTIONS;
+- git clone --depth 1 https://github.com/TravaOpenJDK/openjdk-build.git;
 script:
-  - export JDK_BOOT_DIR="$PWD/openjdk-build/jdk-8"
-  - mkdir -p "$JDK_BOOT_DIR"
-  - if [[ $OS_BUILD == "linux" ]]; then
-      wget -q -O - "https://api.adoptopenjdk.net/v2/binary/releases/openjdk8?openjdk_impl=hotspot&os=linux&arch=x64&release=latest&type=jdk" | tar xpzf - --strip-components=2 -C ${JDK_BOOT_DIR};
-      bash -c "cd openjdk-build && export LOG=info && ./makejdk-any-platform.sh --tag \"${SOURCE_JDK_TAG}\" --jdk-boot-dir ${JDK_BOOT_DIR} --target-file-name java8-openjdk-dcevm-${TRAVIS_OS_NAME}.tar.gz jdk8u";
-    fi
-  - if [[ $OS_BUILD == "osx" ]]; then
-      wget -q -O - "https://api.adoptopenjdk.net/v2/binary/releases/openjdk8?openjdk_impl=hotspot&os=mac&arch=x64&release=latest&type=jdk" | tar xpzf - --strip-components=2 -C ${JDK_BOOT_DIR};
-      JDK_BOOT_DIR="${JDK_BOOT_DIR}/Contents/Home";
-      export SA_LDFLAGS=-fobjc-exceptions;
-      bash -c "cd openjdk-build && export LOG=info && ./makejdk-any-platform.sh --tag \"${SOURCE_JDK_TAG}\" --jdk-boot-dir ${JDK_BOOT_DIR} --build-variant dcevm --branch dcevm8u192
-        --hswap-agent-download-url \"${HSWAP_AGENT_DOWNLOAD_URL}\" --target-file-name java8-openjdk-dcevm-${TRAVIS_OS_NAME}.tar.gz jdk8u";
-    fi
-  - if [[ $OS_BUILD == "windows" ]]; then
-      powershell -Command "C:\tools\cygwin\bin\bash.exe -c './build_windows.sh'";
-    fi
+- export JDK_BOOT_DIR="$PWD/openjdk-build/jdk-8"
+- mkdir -p "$JDK_BOOT_DIR"
+- if [[ $OS_BUILD == "linux" ]]; then wget -q -O - "https://api.adoptopenjdk.net/v2/binary/releases/openjdk8?openjdk_impl=hotspot&os=linux&arch=x64&release=latest&type=jdk"
+  | tar xpzf - --strip-components=2 -C ${JDK_BOOT_DIR}; bash -c "cd openjdk-build
+  && export LOG=info && ./makejdk-any-platform.sh --tag \"${SOURCE_JDK_TAG}\" --jdk-boot-dir
+  ${JDK_BOOT_DIR} --target-file-name java8-openjdk-dcevm-${TRAVIS_OS_NAME}.tar.gz
+  jdk8u"; fi
+- if [[ $OS_BUILD == "osx" ]]; then wget -q -O - "https://api.adoptopenjdk.net/v2/binary/releases/openjdk8?openjdk_impl=hotspot&os=mac&arch=x64&release=latest&type=jdk"
+  | tar xpzf - --strip-components=2 -C ${JDK_BOOT_DIR}; JDK_BOOT_DIR="${JDK_BOOT_DIR}/Contents/Home";
+  export SA_LDFLAGS=-fobjc-exceptions; bash -c "cd openjdk-build && export LOG=info
+  && ./makejdk-any-platform.sh --tag \"${SOURCE_JDK_TAG}\" --jdk-boot-dir ${JDK_BOOT_DIR}
+  --build-variant dcevm --branch dcevm8u192 --hswap-agent-download-url \"${HSWAP_AGENT_DOWNLOAD_URL}\"
+  --target-file-name java8-openjdk-dcevm-${TRAVIS_OS_NAME}.tar.gz jdk8u"; fi
+- if [[ $OS_BUILD == "windows" ]]; then powershell -Command "C:\tools\cygwin\bin\bash.exe
+  -c './build_windows.sh'"; fi
 deploy:
   provider: releases
   api_key:
-  file_glob: true
+    secure: V2+aHQ8ZMOx55aM64oub9bnyO9OMpiAW4KsmcwYZLnyGn08D96mU6wM6aILnMhhEKjRzs9RTZxiMOV2z92pXyoOFBc4+GDN+wm07+KSqnBLuK7C0SRYN2J3G9nTQpn09bHfp6m0Xt3mTsL6q8tvQ+jR3Pj7bMChcs6QvgmAA3zXYAJ7jM+GP+Q7prCot4U9yqmK/QQvCb64wZ+D5ZarQ/6XZNvoD3YBPZ1A9/hPS2PMX/xsGiz+9H9lHAzJEkxHS1IvW++H0LR+U+QTKKKYaf7RcjW2042P0CZzOSxG/ikCFdlTcqEfQeL1HLDLggh7/7elRRgo8j5Qo2wS/JCVdsH3ya0z6fW29DAM4HtQDwbHpdi3L6NSBlPksG/kqVD7zrNVb12eh7feGnjoZ/rDUl0FA2tXVBqiMoStf6xB25AKdYdWocApq0qTYZ9JiaEODynlqw1PlCKlufhX/Wh7B+t1EmuSg59olavaDCin6aRQdF3ZpDWShi5kiaeaSjrK25QeOwh095+2Ucd/a00MgQl6AzlXB3uqhvHSTFpHjmbgRMt+JdIGOTbPV2yachp+qh1rUb8X6yy9mTvAmboizA5iXw1VnjfewRW9gPrrn4WGqEDc9jZSBeMV3YI2fGW6cyg27533iApwKseegDBT6z28I30cWUSFIA6U5PvEdG1c=
   file: openjdk-build/workspace/target/*
-  skip_cleanup: true
   on:
     repo: TravaOpenJDK/trava-jdk-8-dcevm
-    all_branches: true
-    tags: true

@@ -1,5 +1,8 @@
 language: cpp
-env: SOURCE_JDK_BRANCH=dcevm8u192 SOURCE_JDK_TAG=dcevm8u192.0
+env: 
+  global:
+    - SOURCE_JDK_BRANCH=dcevm8u192 
+    - SOURCE_JDK_TAG=dcevm8u192.0
 jdk: oraclejdk8
 matrix:
   include:

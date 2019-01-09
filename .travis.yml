@@ -39,6 +39,7 @@ script:
         --hswap-agent-download-url \"${HSWAP_AGENT_DOWNLOAD_URL}\" --target-file-name java8-openjdk-dcevm-${TRAVIS_OS_NAME}.tar.gz jdk8u"; 
     fi
   - if [[ $OS_BUILD == "osx" ]]; then 
+      sudo xcode-select --switch "/Applications/Xcode.app";
       wget -q -O - "https://api.adoptopenjdk.net/v2/binary/releases/openjdk8?openjdk_impl=hotspot&os=mac&arch=x64&release=latest&type=jdk" | tar xpzf - --strip-components=2 -C ${JDK_BOOT_DIR}; 
       JDK_BOOT_DIR="${JDK_BOOT_DIR}/Contents/Home";
       export SA_LDFLAGS=-fobjc-exceptions; bash -c "cd openjdk-build && export LOG=info && ./makejdk-any-platform.sh --branch \"${SOURCE_JDK_BRANCH}\" --tag \"${SOURCE_JDK_TAG}\" --jdk-boot-dir ${JDK_BOOT_DIR} 

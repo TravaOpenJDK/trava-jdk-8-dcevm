@@ -9,9 +9,9 @@ matrix:
   - os: osx
     env: OS_BUILD=osx
     osx_image: xcode6.4
-    before_install:
-    - brew update
-    - brew install gcc
+#    before_install:
+#    - brew update
+#    - brew install gcc
   - os: linux
     env: OS_BUILD=linux
     dist: xenial

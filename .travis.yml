@@ -23,7 +23,7 @@ matrix:
   - os: windows
     env: OS_BUILD=windows
     before_install:
-    - choco list -lap
+    - choco list --localonly
     - choco install cygwin
     - C:\\tools\\cygwin\\cygwinsetup.exe -q -P make,unzip,automake,autoconf,zip
     - choco install visualstudiocommunity2013 

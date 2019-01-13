@@ -23,11 +23,8 @@ matrix:
   - os: windows
     env: OS_BUILD=windows
     before_install:
-    - choco list --localonly
     - choco install cygwin
     - C:\\tools\\cygwin\\cygwinsetup.exe -q -P make,unzip,automake,autoconf,zip
-    #- choco uninstall vcredist2017 vcredist140 --force
-    #- choco install vcredist2013 microsoft-build-tools-2013 --force --allow-downgrade
 before_script:
   - if [[ $OS_BUILD == "windows" ]]; then git config --system core.longpaths true; git config --global core.autocrlf false; fi
   - unset -v _JAVA_OPTIONS;

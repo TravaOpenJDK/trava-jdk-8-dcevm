@@ -26,7 +26,9 @@ matrix:
     - choco list --localonly
     - choco install cygwin
     - C:\\tools\\cygwin\\cygwinsetup.exe -q -P make,unzip,automake,autoconf,zip
-    - choco install visualstudiocommunity2013 
+    - choco uninstall dotnet4.6.2 microsoft-build-tools vcredist140 vcredist2017 visualstudio2017buildtools 
+    - choco install vcredist2013 --force --allow-downgrade
+    - choco install microsoft-build-tools-2013 --force --allow-downgrade
 before_script:
   - if [[ $OS_BUILD == "windows" ]]; then git config --system core.longpaths true; git config --global core.autocrlf false; fi
   - unset -v _JAVA_OPTIONS;

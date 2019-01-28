@@ -23,6 +23,8 @@ matrix:
   - os: windows
     env: OS_BUILD=windows
     before_install:
+    - choco install vcredist2012
+    - choco install windows-sdk-10.0
     - choco install cygwin
     - C:\\tools\\cygwin\\cygwinsetup.exe -q -P make,unzip,automake,autoconf,zip
 before_script:

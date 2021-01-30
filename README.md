@@ -2,15 +2,14 @@ Trava dcevm-8
 ==============
 [![Build Status](https://api.travis-ci.org/TravaOpenJDK/trava-jdk-8-dcevm.svg)](https://travis-ci.org/TravaOpenJDK/trava-jdk-8-dcevm) [![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
-Trava is build farm created and maintained by [HotswapProjects](https://github.com/HotswapProjects). The main objective of this project is to provide dcevm-8 binaries. Build is transparent as much as possible. [dcevm-8 source code](https://github.com/HotswapProjects/openjdk-jdk8u-dcevm) is build on [Travis](https://travis-ci.org/TravaOpenJDK/trava-jdk-8-dcevm) and the destination binaries are bundled with [HotswapAgent](https://github.com/HotswapProjects/HotswapAgent). Building is exclusively based on [modified](https://github.com/TravaOpenJDK/openjdk-build/tree/travaopenjdk) AdoptOpenJDK [scripts](https://github.com/AdoptOpenJDK/openjdk-build).
+TravaOpenJDK8 is OpenJDK8 for developers. Since it is based on **dcevm** and integrated **HotswapAgent**, it allows **advanced hotswap** like method-field addition and many more. Trava is a build farm created and maintained by [HotswapProjects](https://github.com/HotswapProjects). Build is transparent as much as possible. [dcevm-8 source code](https://github.com/HotswapProjects/openjdk-jdk8u-dcevm) is built on [Travis](https://travis-ci.org/TravaOpenJDK/trava-jdk-8-dcevm) and the produced JDK images are bundled with [HotswapAgent](https://github.com/HotswapProjects/HotswapAgent). Building is exclusively based on [modified](https://github.com/TravaOpenJDK/openjdk-build/tree/travaopenjdk) AdoptOpenJDK [scripts](https://github.com/AdoptOpenJDK/openjdk-build).
 
 ## Install
 Download [windows/linux/macos binaries](https://github.com/TravaOpenJDK/trava-jdk-8-dcevm/releases), unpack and set JAVA_HOME to it's location (or add it as JDK to your IDE).
 
 ## Configure
-Use travaJDK as alternative jdk, do not use option `-XXaltjvm=dcevm`, since dcevm is part of distribution. For HotswapAgent configuration look at [hotswapagent.org](http://hotswapagent.org/)
-If you are using dcevm as alternative JVM via -XXaltjvm=dcevm, just extract `libjvm.so` from travaJDK package and move it to standard JVM directory. Graphical installation is not supported
-by travaJDK now.
+Use travaJDK as alternative jdk, do not use option `-XXaltjvm=dcevm`, since dcevm main JVM in this distribution. For HotswapAgent configuration look at [hotswapagent.org](http://hotswapagent.org/)
+If you are using dcevm as alternative JVM via -XXaltjvm=dcevm, just extract `libjvm.so` from travaJDK package and move it to standard JVM directory. Graphical installation is not supported by travaJDK now.
 
 ## Build your binaries!
 It is not necessary to use supplied binaries, you can build own binaries. It is simple and it can be done in several

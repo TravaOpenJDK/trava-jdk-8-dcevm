@@ -14,9 +14,9 @@ unset -v CC
 unset -v CXX
 
 FREETYPE_DIR="$PWD/openjdk-build/freetype"
-export TOOLCHAIN_VERSION="2013"
-unset VS120COMNTOOLS
-unset VS110COMNTOOLS
+# export TOOLCHAIN_VERSION="2013"
+# unset VS120COMNTOOLS
+# unset VS110COMNTOOLS
 
 cd ./openjdk-build
 export LOG=info

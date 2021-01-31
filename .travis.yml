@@ -23,7 +23,7 @@ matrix:
   - os: windows
     env: OS_BUILD=windows
     before_install:
-    - choco install microsoft-build-tools --version 12.0.21005.20140416 --force
+#    - choco install microsoft-build-tools --version 12.0.21005.20140416 --force
     - choco install cygwin
     - C:\\tools\\cygwin\\cygwinsetup.exe -q -P make,unzip,automake,autoconf,zip
 before_script:

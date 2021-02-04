@@ -25,6 +25,7 @@ matrix:
     before_install:
 #    - choco install microsoft-build-tools --version 12.0.21005.20140416 --force
     - choco install cygwin
+    - choco install vs2010sdk
     - C:\\tools\\cygwin\\cygwinsetup.exe -q -P make,unzip,automake,autoconf,zip
 before_script:
   - if [[ $OS_BUILD == "windows" ]]; then git config --system core.longpaths true; git config --global core.autocrlf false; fi

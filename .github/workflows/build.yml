@@ -1,0 +1,45 @@
+name: build
+
+on:
+  push:
+    branches:
+      - 'master'
+  pull_request:
+
+env:
+  SOURCE_JDK_BRANCH: dcevm8u282b08
+  SOURCE_JDK_TAG: dcevm8u282b08
+  HSWAP_AGENT_DOWNLOAD_URL: 'https://github.com/HotswapProjects/HotswapAgent/releases/download/RELEASE-1.4.1/hotswap-agent-1.4.1.jar'
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os:
+          - windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup JDK and dependencies
+        run: |
+          if [ ${{ matrix.os }} = 'windows-latest' ]; then
+            choco install cygwin
+            choco install vs2010sdk
+            C:\\tools\\cygwin\\cygwinsetup.exe -q -P make,unzip,automake,autoconf,zip
+            powershell -Command "C:\tools\cygwin\bin\bash.exe -c './build_windows.sh'"
+          fi
+
+      - name: Compress artifacts
+        run: |
+          tar -czvf java8-openjdk-dcevm-${{ matrix.os }}.tar.gz openjdk-build/workspace/target/*
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: java8-openjdk-dcevm-${{ matrix.os }}.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -27,7 +27,7 @@ jobs:
       - name: Setup JDK and dependencies
         run: |
             choco install cygwin
-            choco install vs2010sdk
+            choco install visualstudio2022community
             C:\\tools\\cygwin\\cygwinsetup.exe -q -P make,unzip,automake,autoconf,zip
             powershell -Command "C:\tools\cygwin\bin\bash.exe -c './build_windows.sh'"
 
